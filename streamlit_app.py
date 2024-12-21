@@ -43,6 +43,8 @@ y=df['Durum']
 
 x_train,x_test,y_train,y_test=train_test_split(X,y,train_size=0.75,random_state=42)
 
+st.header('Ürün Yorumları NLP Projesi')
+
 yorum=st.text_area('Yorum metnini giriniz')
 btn=st.button('Yorumu kategorilendir')
 
