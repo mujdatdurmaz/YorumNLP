@@ -1,4 +1,3 @@
-
 import  streamlit as st
 import pandas as pd
 import numpy as np
@@ -6,6 +5,18 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import string
+
+
+import sqlite3
+import datetime
+
+zaman=str(datetime.datetime.now())
+conn=sqlite3.connect('trendyorum.sqlite3')
+c=conn.cursor()
+
+c.execute("CREATE TABLE IF NOT EXISTS testler(yorum TEXT, sonuc TEXT, zaman TEXT)")
+conn.commit()
+
 
 
 df=pd.read_csv('yorum.csv.zip',on_bad_lines='skip',delimiter=";")
@@ -50,6 +61,15 @@ if btn:
     s=kat.get(sonuc[0])
     st.subheader(s)
     st.write('Model Skoru :',skor)
+    c.execute('INSERT INTO testler VALUES(?,?,?)',(yorum,s,zaman))
+    conn.commit()
+
+
+c.execute('SELECT * FROM testler')
+testler=c.fetchall()
+
+st.table(testler)
+
 
 
 kod='''
@@ -62,6 +82,18 @@ from sklearn.ensemble import RandomForestClassifier
 import string
 
 
+import sqlite3
+import datetime
+
+zaman=str(datetime.datetime.now())
+conn=sqlite3.connect('trendyorum.sqlite3')
+c=conn.cursor()
+
+c.execute("CREATE TABLE IF NOT EXISTS testler(yorum TEXT, sonuc TEXT, zaman TEXT)")
+conn.commit()
+
+
+
 df=pd.read_csv('yorum.csv.zip',on_bad_lines='skip',delimiter=";")
 
 def temizle(sutun):
@@ -104,6 +136,14 @@ if btn:
     s=kat.get(sonuc[0])
     st.subheader(s)
     st.write('Model Skoru :',skor)
+    c.execute('INSERT INTO testler VALUES(?,?,?)',(yorum,s,zaman))
+    conn.commit()
+
+
+c.execute('SELECT * FROM testler')
+testler=c.fetchall()
+
+st.table(testler)
 '''
 
 st.header('Kaynak Kodları')
